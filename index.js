@@ -75,7 +75,25 @@ server.delete('/api/users/:id', (req, res) => {
 })
 
 server.put('/api/users/:id', (req, res) => {
+  try {
+    const { id } = req.params
+    const found = users.find(user => user.id === id)
+    const modifiedUser = req.body
 
+    if (found) {
+      if (modifiedUser.name && modifiedUser.bio) {
+        users = users.map(user => user.id === id ? modifiedUser : user)
+        res.status(200).json(modifiedUser)
+      } else {
+        res.status(400).json({ errorMessage: 'Please provide name and bio for the user' })
+      }
+    } else {
+      res.status(404).json({ message: 'The user with the specified ID does not exist.' })
+    }
+  }
+  catch (err) {
+    res.status('500').json({ errorMessage: 'The user information could not be modified' })
+  }
 })
 
 server.listen(PORT)
