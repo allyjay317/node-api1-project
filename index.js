@@ -44,6 +44,7 @@ server.get('/api/users/:id', (req, res) => {
 
     if (found) {
       res.status(200).json(found)
+
     }
     else {
       res.status(404).json({ message: 'The user with the specified ID does not exist' })
@@ -56,7 +57,21 @@ server.get('/api/users/:id', (req, res) => {
 })
 
 server.delete('/api/users/:id', (req, res) => {
+  try {
+    const { id } = req.params
+    const found = users.find(user => user.id === id)
 
+    if (found) {
+      users = users.filter(user => user.id !== id)
+      res.status('204').json(found)
+    }
+    else {
+      res.status('404').json({ message: "The user with the specified ID does not exist." })
+    }
+  }
+  catch (err) {
+    res.status('500').json({ errorMessage: 'The user could not be removed' })
+  }
 })
 
 server.put('/api/users/:id', (req, res) => {
