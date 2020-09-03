@@ -1,11 +1,13 @@
 const express = require('express');
 const shortid = require('shortid');
+const cors = require('cors')
 const server = express()
 let users = []
 
 const PORT = 5000;
 
 server.use(express.json())
+server.use(cors())
 
 server.get('/', (req, res) => {
   res.status(200).send('Hello World')
@@ -20,7 +22,7 @@ server.post('/api/users', (req, res) => {
       res.status(201).json(newUser)
     }
     catch (err) {
-      res.status('500').json({ errorMessage: 'There was an error while saving the user to the database' })
+      res.status(500).json({ errorMessage: 'There was an error while saving the user to the database' })
     }
   }
   else {
@@ -30,10 +32,10 @@ server.post('/api/users', (req, res) => {
 
 server.get('/api/users', (req, res) => {
   try {
-    res.status('200').json(users)
+    res.status(200).json(users)
   }
   catch (err) {
-    res.status('500').json({ errorMessage: 'There was an error while saving the user to the database' })
+    res.status(500).json({ errorMessage: 'There was an error while saving the user to the database' })
   }
 })
 
@@ -63,14 +65,14 @@ server.delete('/api/users/:id', (req, res) => {
 
     if (found) {
       users = users.filter(user => user.id !== id)
-      res.status('204').json(found)
+      res.status(204).json(found)
     }
     else {
-      res.status('404').json({ message: "The user with the specified ID does not exist." })
+      res.status(404).json({ message: "The user with the specified ID does not exist." })
     }
   }
   catch (err) {
-    res.status('500').json({ errorMessage: 'The user could not be removed' })
+    res.status(500).json({ errorMessage: 'The user could not be removed' })
   }
 })
 
@@ -93,8 +95,8 @@ server.put('/api/users/:id', (req, res) => {
     }
   }
   catch (err) {
-    res.status('500').json({ errorMessage: 'The user information could not be modified' })
+    res.status(500).json({ errorMessage: 'The user information could not be modified' })
   }
 })
 
-server.listen(PORT)
+server.listen(PORT, () => console.log(`listening on ${PORT} with cors`))
