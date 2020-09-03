@@ -82,6 +82,7 @@ server.put('/api/users/:id', (req, res) => {
 
     if (found) {
       if (modifiedUser.name && modifiedUser.bio) {
+        modifiedUser.id = id
         users = users.map(user => user.id === id ? modifiedUser : user)
         res.status(200).json(modifiedUser)
       } else {
