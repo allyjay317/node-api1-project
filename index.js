@@ -28,7 +28,7 @@ server.post('/api/users', (req, res) => {
   }
 })
 
-server.get('api/users', (req, res) => {
+server.get('/api/users', (req, res) => {
   try {
     res.status('200').json(users)
   }
