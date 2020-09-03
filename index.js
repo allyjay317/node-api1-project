@@ -38,6 +38,20 @@ server.get('api/users', (req, res) => {
 })
 
 server.get('/api/users/:id', (req, res) => {
+  try {
+    const { id } = req.params
+    const found = users.find(user => user.id === id)
+
+    if (found) {
+      res.status(200).json(found)
+    }
+    else {
+      res.status(404).json({ message: 'The user with the specified ID does not exist' })
+    }
+  }
+  catch (err) {
+    res.status(500).json({ errorMessage: 'The user information could not be retrieved.' })
+  }
 
 })
 
